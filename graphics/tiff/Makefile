@@ -13,6 +13,8 @@ LICENSE=	BSD3CLAUSE
 LICENSE_FILE=	${WRKSRC}/COPYRIGHT
 
 LIB_DEPENDS=	libjbig.so:graphics/jbigkit
+LIB_DEPENDS+=	libwebp.so:graphics/webp
+LIB_DEPENDS+=	libzstd.so:archivers/zstd
 
 USES=		cpe jpeg libtool pathfix
 CPE_PRODUCT=	libtiff
@@ -22,9 +24,11 @@ USE_LDCONFIG=	yes
 GNU_CONFIGURE=	yes
 CONFIGURE_ARGS+=	--with-jpeg-include-dir=${LOCALBASE}/include \
 			--with-jpeg-lib-dir=${LOCALBASE}/lib \
-			--without-x \
-			--disable-webp \
-			--disable-zstd
+			--with-webp-include-dir=${LOCALBASE}/include \
+			--with-webp-lib-dir=${LOCALBASE}/lib \
+			--with-zstd-include-dir=${LOCALBASE}/include \
+			--with-zstd-lib-dir=${LOCALBASE}/lib \
+			--without-x
 
 INSTALL_TARGET=	install-strip
 TEST_TARGET=	check
