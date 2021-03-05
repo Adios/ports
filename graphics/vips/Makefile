@@ -2,10 +2,13 @@
 # $FreeBSD: head/graphics/vips/Makefile 565123 2021-02-13 11:08:29Z mandree $
 
 PORTNAME=	vips
-PORTVERSION=	8.10.5
-PORTREVISION=	3
+PORTVERSION=	8.10.gb14bac53
 CATEGORIES=	graphics
-MASTER_SITES=	https://github.com/libvips/libvips/releases/download/v${PORTVERSION}/
+
+USE_GITHUB=	yes
+GH_TAGNAME=	v8.10-2488-gb14bac53
+GH_ACCOUNT=	Adios
+GH_PROJECT=	libvips
 
 MAINTAINER=	danilo@FreeBSD.org
 COMMENT=	Free image processing system
@@ -18,9 +21,12 @@ RUN_DEPENDS=	bash:shells/bash
 LIB_DEPENDS=	libfontconfig.so:x11-fonts/fontconfig \
 		libfreetype.so:print/freetype2 \
 		libexpat.so:textproc/expat2
+# Packages from GITHUB need these two lines for autogen.sh
+BUILD_DEPENDS=	gtkdocize:textproc/gtk-doc \
+		g-ir-scanner:devel/gobject-introspection
 
 USES=		compiler:c++11-lang cpe gettext gmake gnome libtool localbase \
-		pathfix pkgconfig python shebangfix
+		pathfix pkgconfig python shebangfix autoreconf
 
 SHEBANG_FILES=	tools/vips-${PORTVERSION:R} tools/vipsprofile
 USE_GNOME=	glib20
@@ -32,6 +38,8 @@ CONFIGURE_ARGS+=	--without-nifti \
 			--disable-introspection
 
 USE_LDCONFIG=	yes
+
+AUTORECONF=	NOCONFIGURE=1 ${WRKSRC}/autogen.sh
 
 PLIST_SUB=	VERSION="${PORTVERSION:R}"
 
